@@ -1,13 +1,17 @@
 # -*- coding: utf-8 -*-
 
+from . import clone_army
 import click
 
 @click.command()
-def main(args=None):
+@click.option('-o', '--org', 'type', flag_value='org', default=True)
+@click.option('-u', '--user', 'type', flag_value='user')
+@click.argument('account')
+def main(account, type):
     """Console script for clone_army"""
-    click.echo("Replace this message by putting your code into "
-                "clone_army.cli.main")
-    click.echo("See click documentation at http://click.pocoo.org/")
+    result = clone_army.repositories(account, type)
+    return 'Placeholder for results'
+
 
 
 if __name__ == "__main__":
