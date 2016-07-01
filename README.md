@@ -4,33 +4,28 @@
 [![Build Status](https://img.shields.io/travis/18F/clone_army.svg?branch=master)](https://travis-ci.org/18F/clone_army)
 [![Coverage Status](https://coveralls.io/repos/github/18F/clone_army.svg?branch=master)](https://coveralls.io/github/18F/clone_army?branch=master)
 [![Code Climate](https://codeclimate.com/github/18F/clone_army.svg)](https://codeclimate.com/github/18F/clone_army)
-[![Accessibility](https://continua11y.18f.gov/18F/clone_army?branch=master)](https://continua11y.18f.gov/18F/clone_army)
+
+Locally clone or synch all a GitHub account's public repos.
 
 
-<a href="https://pypi.python.org/pypi/clone_army">
-  <img src="https://img.shields.io/pypi/v/clone_army.svg"
-  alt="PyPI shield">
-</a>
+## Using
 
-<a href="https://travis-ci.org/18F/clone_army">
-  <img src="https://img.shields.io/travis/18F/clone_army.svg"
-  alt="Travis shield">
-</a>
+To clone or synch an organization's repos, `cd` to the directory you want
+to serve as the parent directory of all the repos, and
 
-<a href="https://clone-army.readthedocs.io/en/latest/?badge=latest ">
-  <img src=https://readthedocs.org/projects/clone-army/badge/?version=latest"
-  alt="ReadTheDocs shield">
-</a>
+    clone-army <org_name>
 
-Locally clone or synch all a GitHub account's repos
+Each repo will be cloned, if there is no child directory by its name; or,
+if there is, `git pull` will be run in it.
 
+Any extra options after the organization name are passed on to `git clone`.
+`--depth 1`, for example, makes
+[shallow clones](https://www.perforce.com/blog/141218/git-beyond-basics-using-shallow-clones)
+that can save considerable disk space.
 
-* Documentation: https://clone-army.readthedocs.io.
+To clone the repos of a user (not an org), add `-u` or `--user`:
 
-
-## Features
-
-* TODO
+    clone-army --user <user_name>
 
 ## Credits
 

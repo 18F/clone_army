@@ -11,10 +11,10 @@ class Response(object):
 
     def json(self):
         begin_at = self._PAGE_LENGTH * (self.page - 1)
-        return _DATA[begin_at:begin_at + self._PAGE_LENGTH]
+        return DATA[begin_at:begin_at + self._PAGE_LENGTH]
 
 
-_DATA = [
+DATA = [
     {'archive_url':
      'https://api.github.com/repos/18F/14c-prototype/{archive_format}{/ref}',
      'assignees_url':

@@ -3,14 +3,17 @@
 from . import clone_army
 import click
 
-@click.command()
-@click.option('-o', '--org', 'type', flag_value='org', default=True)
-@click.option('-u', '--user', 'type', flag_value='user')
+@click.command(context_settings=dict(ignore_unknown_options=True,))
+@click.option('-o', '--org', 'type', flag_value='org', default=True, help='Clone GitHub account of an org')
+@click.option('-u', '--user', 'type', flag_value='user', help='Clone GitHub account of a single user')
+@click.option('-f', '--filter', help='Filter repositories (regex syntax)')
 @click.argument('account')
-def main(account, type):
+@click.argument('git_options', nargs=-1, type=click.UNPROCESSED)
+def main(account, type, filter, git_options):
     """Console script for clone_army"""
-    result = clone_army.repositories(account, type)
-    return 'Placeholder for results'
+    if account.startswith('-'):
+        raise click.BadArgumentUsage("Options for Git should come at end.")
+    clone_army.Repository.synch_all(account, type, filter, *git_options)
 
 
 
