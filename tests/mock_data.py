@@ -3,7 +3,7 @@ class Response(object):
     _PAGE_LENGTH = 3
 
     def __init__(self, url):
-        pieces = url.split('=')
+        pieces = url.split('page=')
         if len(pieces) > 1:
             self.page = int(pieces[1])
         else:
