@@ -1,4 +1,27 @@
+import requests
+
+
 class Response(object):
+
+    ok = True
+    status_code = 200
+
+    def raise_for_status(self):
+        if not self.ok:
+            raise requests.exceptions.HTTPError('status code {}'.format(
+                self.status_code))
+
+
+class BadResponse(Response):
+
+    ok = False
+    status_code = 404
+
+    def __init__(self, url):
+        pass
+
+
+class GoodResponse(Response):
 
     _PAGE_LENGTH = 3
 

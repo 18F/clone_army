@@ -13,6 +13,7 @@ import os.path
 from unittest import mock
 import pytest
 
+import requests
 from click.testing import CliRunner
 
 from clone_army import clone_army
@@ -39,6 +40,12 @@ class TestCli(object):
         assert result.exception
         assert 'Usage:' in result.output
 
+    def test_no_account_name_ok_when_existing_only(self):
+        runner = CliRunner()
+        with runner.isolated_filesystem():
+            result = runner.invoke(cli.main, ['--existing-only', ])
+            assert not result.exception
+
     @pytest.mark.skip(reason="need to mock out despite runner.invoke")
     def test_cli_accepts_type(self):
         runner = CliRunner()
@@ -56,7 +63,7 @@ class TestCli(object):
         pass
 
 
-@mock.patch('requests.get', side_effect=mock_data.Response)
+@mock.patch('requests.get', side_effect=mock_data.GoodResponse)
 class TestRepoList(object):
     def test_lists_org_repos(self, mocked_get):
         repos = clone_army.repositories('18F')
@@ -69,12 +76,19 @@ class TestRepoList(object):
         assert 'https://api.github.com/users' in mocked_get.call_args[0][0]
 
     def test_filtered_repo_list(self, mocked_get):
-        for repo in clone_army.repositories('18F', filter=r'18f'):
-            assert '18f' in repo['name']
+        for repo in clone_army.repositories('18F', filter=r'gsa'):
+            assert 'gsa' in repo['name']
+
+@mock.patch('requests.get', side_effect=mock_data.BadResponse)
+class TestNonexistentRepoList(object):
+    def test_no_such_repo(self, mocked_get):
+        with pytest.raises(requests.exceptions.HTTPError):
+            result = clone_army.repositories('there is no such repo')
+            result.__next__()
 
 
 @mock.patch('subprocess.run')
-@mock.patch('requests.get', side_effect=mock_data.Response)
+@mock.patch('requests.get', side_effect=mock_data.GoodResponse)
 class TestCloning(object):
     @mock.patch('os.path.exists', return_value=False)
     def test_creates_directory(self, mocked_exists, mocked_get, mocked_run):
@@ -104,3 +118,15 @@ class TestCloning(object):
     def test_clone_each_repo(self, mocked_exists, mocked_get, mocked_run):
         clone_army.Repository.synch_all('18F', 'org')
         assert len(mocked_run.mock_calls) == len(mock_data.DATA)
+
+    @mock.patch('os.listdir', return_value=['dir1', 'dir2', 'dir3'])
+    @mock.patch('os.path.isdir', return_value=True)
+    def test_only_updating_present_repos(self, mocked_isdir, mocked_listdir,
+                                         mocked_get, mocked_run):
+        expected_calls = [
+            mock.call(['git', 'pull'], cwd='dir1'), mock.call(
+                ['git', 'pull'], cwd='dir2'), mock.call(
+                    ['git', 'pull'], cwd='dir3')
+        ]
+        clone_army.Repository.synch_present('18F', 'org')
+        mocked_run.assert_has_calls(expected_calls)

@@ -8,6 +8,12 @@
 Locally clone or synch all a GitHub account's public repos.
 
 
+## Installing
+
+*Requires Python 3.5*
+
+    pip install
+
 ## Using
 
 To clone or synch an organization's repos, `cd` to the directory you want
@@ -26,6 +32,10 @@ that can save considerable disk space.
 To clone the repos of a user (not an org), add `-u` or `--user`:
 
     clone-army --user <user_name>
+
+To refresh (pull) only the repositories currently present as subdirectories:
+
+    clone-army -x
 
 ## Credits
 

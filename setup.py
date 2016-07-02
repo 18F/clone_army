@@ -32,14 +32,14 @@ setup(
                  'clone_army'},
     entry_points={
         'console_scripts': [
-            'clone_army=clone_army.cli:main'
+            'clone-army=clone_army.cli:main'
         ]
     },
     include_package_data=True,
     install_requires=requirements,
     license="CC0 license",
     zip_safe=False,
-    keywords='clone_army',
+    keywords=['git', 'repository', 'clone'],
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
