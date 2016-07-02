@@ -43,14 +43,18 @@ class Repository(object):
             repo.synch(*args)
 
     @classmethod
-    def synch_present(cls, account, type, filter=None, *args):
+    def synch_present(cls, filter=None, *args):
         """
         Updates repositories already present in child directories.
         """
         for dir in os.listdir():
             if os.path.isdir(dir):
-                logging.info('{} exists; pulling changes'.format(dir))
-                subprocess.run(['git', 'pull'], cwd=dir)
+                if filter and not re.search(filter, dir):
+                    logging.info('{} ignored; filtered by `{}`'.format(dir,
+                                                                       filter))
+                else:
+                    logging.info('{} exists; pulling changes'.format(dir))
+                    subprocess.run(['git', 'pull'], cwd=dir)
 
     def synch(self, *args):
         if os.path.exists(self.name):

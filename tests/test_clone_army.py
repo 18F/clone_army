@@ -25,9 +25,6 @@ class TestCli(object):
     def setup_class(cls):
         pass
 
-    def test_something(self):
-        pass
-
     @pytest.mark.skip(reason="need to mock out despite runner.invoke")
     def test_cli_accepts_account_name(self):
         runner = CliRunner()
@@ -79,6 +76,7 @@ class TestRepoList(object):
         for repo in clone_army.repositories('18F', filter=r'gsa'):
             assert 'gsa' in repo['name']
 
+
 @mock.patch('requests.get', side_effect=mock_data.BadResponse)
 class TestNonexistentRepoList(object):
     def test_no_such_repo(self, mocked_get):
@@ -128,5 +126,17 @@ class TestCloning(object):
                 ['git', 'pull'], cwd='dir2'), mock.call(
                     ['git', 'pull'], cwd='dir3')
         ]
-        clone_army.Repository.synch_present('18F', 'org')
+        clone_army.Repository.synch_present()
+        mocked_run.assert_has_calls(expected_calls)
+
+    @mock.patch('os.listdir', return_value=['foo1', 'bar2', 'foo3', 'bar4'])
+    @mock.patch('os.path.isdir', return_value=True)
+    def test_filter_on_existing_only(self, mocked_isdir, mocked_listdir,
+                                     mocked_get, mocked_run):
+        expected_calls = [
+            mock.call(['git', 'pull'], cwd='bar2'),
+            mock.call(
+                ['git', 'pull'], cwd='bar4'),
+        ]
+        clone_army.Repository.synch_present(filter='bar')
         mocked_run.assert_has_calls(expected_calls)
