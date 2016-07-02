@@ -12,7 +12,7 @@ Locally clone or synch all a GitHub account's public repos.
 
 *Requires Python 3.5*
 
-    pip install
+    pip install -e git+https://github.com/18F/clone_army.git#egg=clone_army
 
 ## Using
 
@@ -24,7 +24,7 @@ to serve as the parent directory of all the repos, and
 Each repo will be cloned, if there is no child directory by its name; or,
 if there is, `git pull` will be run in it.
 
-Any extra options after the organization name are passed on to `git clone`.
+Any extra options *after* the organization name are passed on to `git clone`.
 `--depth 1`, for example, makes
 [shallow clones](https://www.perforce.com/blog/141218/git-beyond-basics-using-shallow-clones)
 that can save considerable disk space.
@@ -36,6 +36,14 @@ To clone the repos of a user (not an org), add `-u` or `--user`:
 To refresh (pull) only the repositories currently present as subdirectories:
 
     clone-army -x
+
+The only differences between this and simply re-running `clone-army <org_name>`
+are
+
+- Any repositories that have appeared in the account in the meantime will
+not be cloned
+- If you had run `clone-army` with a filter, you won't need to re-use that
+filter to avoid cloning the rest of the repositories
 
 ## Credits
 
