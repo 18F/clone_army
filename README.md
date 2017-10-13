@@ -45,6 +45,10 @@ not be cloned
 - If you had run `clone-army` with a filter, you won't need to re-use that
 filter to avoid cloning the rest of the repositories
 
+## Comparable projects
+
+- [clone-github](https://github.com/khilnani/clone-github)
+
 ## Credits
 
 This package was created with [Cookiecutter](https://github.com/audreyr/cookiecutter)
