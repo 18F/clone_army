@@ -9,12 +9,12 @@ clone_army
    :target: https://circleci.com/gh/18F/clone_army
    :alt: CircleCI status
 
-.. image:: https://api.codeclimate.com/v1/badges/8fe62703d4999c07968c/maintainability
-   :target: https://codeclimate.com/github/18F/clone_army/maintainability
-   :alt: Maintainability
+.. image:: https://codeclimate.com/github/18F/clone_army/badges/gpa.svg
+   :target: https://codeclimate.com/github/18F/clone_army
+   :alt: Code Climate
 
-.. image:: https://api.codeclimate.com/v1/badges/8fe62703d4999c07968c/test_coverage
-   :target: https://codeclimate.com/github/18F/clone_army/test_coverage
+.. image:: https://codeclimate.com/github/18F/clone_army/badges/coverage.svg
+   :target: https://codeclimate.com/github/18F/clone_army/coverage
    :alt: Test Coverage
 
 .. image:: https://gemnasium.com/badges/github.com/18F/clone_army.svg
