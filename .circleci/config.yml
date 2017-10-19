@@ -56,7 +56,7 @@ jobs:
           name: run tests
           command: |
             . venv/bin/activate
-            py.test --cov=clone_army tests
+            py.test --cov=clone_army --cov-report=xml tests
 
       - store_artifacts:
           path: test-reports
