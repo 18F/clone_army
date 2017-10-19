@@ -35,6 +35,7 @@ jobs:
           command: |
             python3 -m venv venv
             . venv/bin/activate
+            pip install -r requirements.txt
             pip install -r requirements_dev.txt
             pip install .
 
@@ -43,8 +44,6 @@ jobs:
             - ./venv
           key: v1-dependencies-{{ checksum "requirements.txt" }}
 
-      # run tests!
-
       - run:
           name: prepare coverage reporter
           command: |
@@ -52,12 +51,12 @@ jobs:
             chmod +x ./cc-test-reporter
             ./cc-test-reporter before-build
 
+      # run tests!
       - run:
           name: run tests
           command: |
             . venv/bin/activate
-            py.test . --cov --cov-report=xml
-
+            py.test --cov=clone_army tests
 
       - store_artifacts:
           path: test-reports
